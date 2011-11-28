@@ -2,7 +2,7 @@
 
 Summary:	ROSA Media Player Plugin
 Name:		rosa-media-player-plugin
-Version:	0.95
+Version:	0.951
 Release:	139
 License:	GPL v.3
 Group:		Video

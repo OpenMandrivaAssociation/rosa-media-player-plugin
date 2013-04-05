@@ -7,6 +7,7 @@ URL:		https://abf.rosalinux.ru/import/rosa-media-player-plugin
 License:        GPL 3+
 Group:		Video
 Source:		%{name}-%{version}.tar.gz
+Source100:	rosa-media-player-plugin.rpmlintrc
 BuildRequires:	qt4-devel
 BuildRequires:	qt4-linguist
 Requires:	mplayer

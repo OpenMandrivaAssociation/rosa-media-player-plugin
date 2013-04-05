@@ -1,3 +1,4 @@
+%define debug_package %{nil}
 Summary:	ROSA Media Player Plugin
 Name:		rosa-media-player-plugin
 Version:        1.0

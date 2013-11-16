@@ -1,17 +1,16 @@
 %define debug_package %{nil}
 Summary:	ROSA Media Player Plugin
 Name:		rosa-media-player-plugin
-Version:        1.0
-Release:	2
+Version:	1.0
+Release:	4
 URL:		https://abf.rosalinux.ru/import/rosa-media-player-plugin
-License:        GPL 3+
+License:	GPL 3+
 Group:		Video
-Source:		%{name}-%{version}.tar.gz
+Source0:	%{name}-%{version}.tar.gz
 Source100:	rosa-media-player-plugin.rpmlintrc
 BuildRequires:	qt4-devel
 BuildRequires:	qt4-linguist
 Requires:	mplayer
-Packager:	Denis Koryavov <denis.koryavov@rosalab.ru>
 
 %if %{_use_internal_dependency_generator}
 %define __noautoreq 'devel\\((.*)\\)'

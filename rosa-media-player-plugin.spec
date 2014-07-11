@@ -2,7 +2,7 @@
 Summary:	ROSA Media Player Plugin
 Name:		rosa-media-player-plugin
 Version:	1.0
-Release:	9
+Release:	10
 URL:		https://abf.rosalinux.ru/import/rosa-media-player-plugin
 License:	GPL 3+
 Group:		Video

@@ -1,70 +1,69 @@
-%define debug_package %{nil}
+%define major 1
+%define librosampcore %mklibname rosampcore %{major}
+
 Summary:	ROSA Media Player Plugin
 Name:		rosa-media-player-plugin
-Version:	1.0
-Release:	12
-URL:		https://abf.rosalinux.ru/import/rosa-media-player-plugin
-License:	GPL 3+
+Version:	1.6
+Release:	5
+License:	GPLv3+
 Group:		Video
+Url:		https://abf.rosalinux.ru/import/rosa-media-player-plugin
 Source0:	%{name}-%{version}.tar.gz
-Source100:	rosa-media-player-plugin.rpmlintrc
-BuildRequires:	qt4-devel
+Patch0:		rosa-media-player-plugin-1.6-undefined.patch
 BuildRequires:	qt4-linguist
+BuildRequires:	qt4-devel
 Requires:	mplayer
 
-%if %{_use_internal_dependency_generator}
-%define __noautoreq 'devel\\((.*)\\)'
-%else
-%define _requires_exceptions devel(
-%endif
-
 %description
-ROSA Media Player Plugin is designed to use with internet browsers 
-like Firefox and Chrome/Chromium.
-
-%prep
-%setup -c
-
-%build
-cd rosa-media-player
-qmake rosampcore.pro
-make
-cd ..
-
-cd rosamp-plugin
-qmake rosamp-plugin-smp.pro
-make
-qmake rosamp-plugin-qt.pro
-make
-qmake rosamp-plugin-wmp.pro
-make
-qmake rosamp-plugin-dvx.pro
-make
-qmake rosamp-plugin-rm.pro
-make
-lrelease rosamp-plugin-qt.pro
-cd ..
-
-%install
-mkdir -p $RPM_BUILD_ROOT/%{_libdir}/mozilla/plugins/
-mkdir -p $RPM_BUILD_ROOT/%{_libdir}/mozilla/plugins/translations/
-mkdir -p $RPM_BUILD_ROOT/%{_libdir}/
-cp -f rosamp-plugin/build/librosa-media-player-plugin-smp.so $RPM_BUILD_ROOT/%{_libdir}/mozilla/plugins/
-cp -f rosamp-plugin/build/librosa-media-player-plugin-dvx.so $RPM_BUILD_ROOT/%{_libdir}/mozilla/plugins/
-cp -f rosamp-plugin/build/librosa-media-player-plugin-qt.so $RPM_BUILD_ROOT/%{_libdir}/mozilla/plugins/
-cp -f rosamp-plugin/build/librosa-media-player-plugin-rm.so $RPM_BUILD_ROOT/%{_libdir}/mozilla/plugins/
-cp -f rosamp-plugin/build/librosa-media-player-plugin-wmp.so $RPM_BUILD_ROOT/%{_libdir}/mozilla/plugins/
-cp -f rosa-media-player/build/librosampcore.so.1.0.0 $RPM_BUILD_ROOT/%{_libdir}/
-
-cp -f rosamp-plugin/translations/*.qm $RPM_BUILD_ROOT/%{_libdir}/mozilla/plugins/translations/
-
-cd rosa-media-player/build/
-ln -s librosampcore.so.1.0.0 $RPM_BUILD_ROOT/%{_libdir}/librosampcore.so.1.0
-ln -s librosampcore.so.1.0.0 $RPM_BUILD_ROOT/%{_libdir}/librosampcore.so.1
-ln -s librosampcore.so.1.0.0 $RPM_BUILD_ROOT/%{_libdir}/librosampcore.so
-
+ROSA Media Player Plugin is designed to use with internet browsers like Firefox
+and Chrome/Chromium.
 
 %files
 %{_libdir}/mozilla/plugins/librosa-media-player-plugin-*
-%{_libdir}/librosampcore*
-%{_libdir}/mozilla/plugins/translations/rosamp_plugin*
+%{_datadir}/rosa-media-player-plugin/translations/rosamp_plugin*
+
+#----------------------------------------------------------------------------
+
+%package -n %{librosampcore}
+Summary:	Shared library for %{name}
+Group:		System/Libraries
+Conflicts:	%{name} < 1.6-5
+
+%description -n %{librosampcore}
+Shared library for %{name}.
+
+%files -n %{librosampcore}
+%{_libdir}/librosampcore.so.%{major}*
+
+#----------------------------------------------------------------------------
+
+%prep
+%setup -q -c
+%patch0 -p1
+
+%build
+mkdir build
+cd build
+%qmake_qt4 ../rosa-media-player-plugin.pro
+%make
+lrelease ../rosa-media-player-plugin.pro
+
+%install
+mkdir -p %{buildroot}%{_libdir}/mozilla/plugins/
+mkdir -p %{buildroot}%{_libdir}/mozilla/plugins/translations/
+mkdir -p %{buildroot}%{_libdir}/
+mkdir -p %{buildroot}%{_datadir}/rosa-media-player-plugin/translations/
+
+echo $PWD
+cd build
+cp -f rosamp-plugin/build/librosa-media-player-plugin-smp.so %{buildroot}%{_libdir}/mozilla/plugins/
+cp -f rosamp-plugin/build/librosa-media-player-plugin-dvx.so %{buildroot}%{_libdir}/mozilla/plugins/
+cp -f rosamp-plugin/build/librosa-media-player-plugin-qt.so %{buildroot}%{_libdir}/mozilla/plugins/
+cp -f rosamp-plugin/build/librosa-media-player-plugin-rm.so %{buildroot}%{_libdir}/mozilla/plugins/
+cp -f rosamp-plugin/build/librosa-media-player-plugin-wmp.so %{buildroot}%{_libdir}/mozilla/plugins/
+cp -f romp/rosa-media-player/build/librosampcore.so.1.0.0 %{buildroot}%{_libdir}/
+
+cp -f ../translations/*.qm %{buildroot}%{_datadir}/rosa-media-player-plugin/translations/
+cd romp/rosa-media-player/build/
+ln -s librosampcore.so.1.0.0 %{buildroot}%{_libdir}/librosampcore.so.1.0
+ln -s librosampcore.so.1.0.0 %{buildroot}%{_libdir}/librosampcore.so.1

@@ -1,5 +1,6 @@
 %define major 1
 %define librosampcore %mklibname rosampcore %{major}
+%define _disable_ld_no_undefined 1
 
 Summary:	ROSA Media Player Plugin
 Name:		rosa-media-player-plugin
@@ -9,7 +10,7 @@ License:	GPLv3+
 Group:		Video
 Url:		https://abf.rosalinux.ru/import/rosa-media-player-plugin
 Source0:	%{name}-%{version}.tar.gz
-Patch0:		rosa-media-player-plugin-1.6-undefined.patch
+#Patch0:		rosa-media-player-plugin-1.6-undefined.patch
 BuildRequires:	qt4-linguist
 BuildRequires:	qt4-devel
 Requires:	mplayer
@@ -39,7 +40,7 @@ Shared library for %{name}.
 
 %prep
 %setup -q -c
-%patch0 -p1
+#patch0 -p1
 
 %build
 mkdir build
